@@ -13,7 +13,11 @@ const TransactionForm = ({ onSubmit }) => {
     amount: '',
     currency: 'EUR',
     country: '',
-    transactionType: 'incoming'
+    transactionType: 'incoming',
+
+    merchant_category: 'online',
+    device_used: 'mobile',
+    payment_channel: 'card'
   });
 
   const countryOptions = [
@@ -33,6 +37,24 @@ const TransactionForm = ({ onSubmit }) => {
     { value: 'incoming', label: t('incomingDeposit') },
     { value: 'outgoing', label: t('outgoingWithdrawal') }
   ];
+
+  const merchantOptions = [
+  { value: 'utilities', label: 'Utilities' },
+  { value: 'online', label: 'Online' },
+  { value: 'other', label: 'Other' }
+];
+
+const deviceOptions = [
+  { value: 'mobile', label: 'Mobile' },
+  { value: 'atm', label: 'ATM' },
+  { value: 'pos', label: 'POS' }
+];
+
+const paymentOptions = [
+  { value: 'card', label: 'Card' },
+  { value: 'ACH', label: 'ACH' },
+  { value: 'wire', label: 'Wire' }
+];
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
@@ -99,7 +121,33 @@ const TransactionForm = ({ onSubmit }) => {
             required
             searchable
           />
+
+          <Select
+
+          label="Merchant Category"
+          options={merchantOptions}
+          value={formData.merchant_category}
+          onChange={(value) => handleChange('merchant_category', value)}
+          required
+          />
+
+         <Select
+         label="Device Used"
+         options={deviceOptions}
+         value={formData.device_used}
+         onChange={(value) => handleChange('device_used', value)}
+         required
+         />
+
+         <Select
+         label="Payment Channel"
+         options={paymentOptions}
+         value={formData.payment_channel}
+         onChange={(value) => handleChange('payment_channel', value)}
+         required
+         />
         </div>
+
 
         <Button
           type="submit"

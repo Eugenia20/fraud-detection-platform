@@ -24,40 +24,7 @@ def get_db():
         db.close()
 
 
-# ====================================================
-# ADMIN - GET TRANSACTIONS (PAGINATED)
-# ====================================================
 
-@router.get("/transactions", response_model=schemas.PaginatedTransactions)
-def admin_get_transactions(
-    limit: int = Query(100, ge=1, le=500),
-    offset: int = Query(0, ge=0),
-    db: Session = Depends(get_db),
-    admin: models.User = Depends(get_current_admin)
-):
-
-    # Query transactions for the current admin
-    query = db.query(models.Transaction).join(models.User)
-
-    total = query.count()
-
-    transactions = (
-        query
-        .order_by(models.Transaction.created_at.desc())
-        .limit(limit)
-        .offset(offset)
-        .all()
-    )
-
-    # Log the retrieval of transactions by the admin
-    logger.info(f"Admin {admin.email} retrieved {len(transactions)} transactions")
-
-    return {
-        "total": total,
-        "limit": limit,
-        "offset": offset,
-        "data": transactions
-    }
 
 
 # ====================================================
@@ -181,6 +148,38 @@ def get_admin_transactions(
         "offset": offset,
         "data": result
     }
+
+    # ====================================================
+    # ADMIN - GET USERS (FIX)
+    # ====================================================
+
+
+@router.get("/users", response_model=schemas.PaginatedUsers)
+def get_admin_users(
+        limit: int = Query(100, ge=1, le=500),
+        offset: int = Query(0, ge=0),
+        db: Session = Depends(get_db),
+        admin: models.User = Depends(get_current_admin),
+):
+    query = db.query(models.User)
+
+    total = query.count()
+
+    users = (
+        query
+        .order_by(models.User.id.desc())
+        .limit(limit)
+        .offset(offset)
+        .all()
+    )
+
+    return {
+        "total": total,
+        "limit": limit,
+        "offset": offset,
+        "data": users
+    }
+
 # ====================================================
 # ACTIVATE USER
 # ====================================================

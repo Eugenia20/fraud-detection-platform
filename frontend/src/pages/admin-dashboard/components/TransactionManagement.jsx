@@ -109,7 +109,7 @@ const TransactionManagement = () => {
     );
     setSelectedTx(updatedTx);
   };
-
+  console.log(transactions);
   return (
     <>
       <div className="bg-card border border-border rounded-xl shadow-sm">
@@ -239,6 +239,7 @@ const TransactionManagement = () => {
               <thead className="bg-muted/50">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">ID</th>
+                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">User</th>
                   <th
                     className="px-4 py-3 text-left text-xs font-medium text-muted-foreground cursor-pointer select-none"
                     onClick={() => handleSort(SORT_FIELDS?.amount)}
@@ -263,13 +264,18 @@ const TransactionManagement = () => {
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Status</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Review</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground min-w-[180px]">Reasons</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Merchant Category</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Device</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Payment Channel</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {transactions?.map((tx) => (
                   <tr key={tx?.id} className="table-row">
-                    <td className="px-4 py-3 text-xs text-foreground data-text">#{tx?.id}</td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground data-text">#{tx?.id}</td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground data-text">{tx?.full_name}</td>
+
                     <td className="px-4 py-3 text-xs text-foreground font-medium">
                       {tx?.amount?.toLocaleString()}
                     </td>
@@ -322,6 +328,9 @@ const TransactionManagement = () => {
                     <span className="text-muted-foreground/50">—</span>
                      )}
                    </td>
+                   <td className="px-4 py-3 text-xs text-muted-foreground data-text">{tx?.merchant_category}</td>
+                   <td className="px-4 py-3 text-xs text-muted-foreground data-text">{tx?.device_used}</td>
+                   <td className="px-4 py-3 text-xs text-muted-foreground data-text">{tx?.payment_channel}</td>
                     <td className="px-4 py-3">
                       <button
                         type="button"
