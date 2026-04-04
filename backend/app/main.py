@@ -9,12 +9,14 @@ from app.logging_config import logger
 from app.api.v1.router import api_router
 from app.core.config import MAX_REQUESTS, GLOBAL_WINDOW
 import pickle
+from pathlib import Path
 
 # ====================================================
 # LOAD THE TRAINED MODEL
 # ====================================================
 # Path to the saved trained model
-model_path = r"C:\Users\Eugenia Wakama\PycharmProjects\BackEndFinance\ml\fraud_detection_xgboost.pkl"
+BASE_DIR = Path(__file__).resolve().parents[1]  # app/
+model_path = BASE_DIR / "ml" / "fraud_detection_xgboost.pkl"
 
 # Load the model when the app starts
 with open(model_path, "rb") as f:

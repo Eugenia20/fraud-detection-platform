@@ -36,6 +36,15 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         full_name=user.full_name,
         phone=user.phone,
         company=user.company,
+
+        email_notifications=True,
+        fraud_alerts=True,
+        weekly_reports=False,
+        system_updates=True,
+        is_deleted=False,
+        is_admin=False,
+        failed_attempts=0,
+        locked_until=None,
     )
 
     db.add(db_user)
