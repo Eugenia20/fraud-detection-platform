@@ -1,32 +1,24 @@
-
+# Stage 1: Build
 FROM node:18 AS build
 
 WORKDIR /app
 
-# Install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy project files
 COPY . .
-
-# Build Vite app
 RUN npm run build
 
-
-
+# Stage 2: Serve
 FROM node:18
 
 WORKDIR /app
 
-# Install static server
 RUN npm install -g serve
 
-# Copy built files from build stage
-COPY --from=build /app/dist ./dist
+# IMPORTANT FIX HERE
+COPY --from=build /app/build ./build
 
-# Expose port
-EXPOSE 5173
+EXPOSE 3000
 
-# Run the app
-CMD ["serve", "-s", "dist", "-l", "5173"]
+CMD ["serve", "-s", "build", "-l", "3000"]
