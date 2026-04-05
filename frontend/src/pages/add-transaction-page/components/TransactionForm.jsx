@@ -21,12 +21,12 @@ const TransactionForm = ({ onSubmit }) => {
   });
 
   const countryOptions = [
-    { value: 'USA', label: t('unitedStates') },
-    { value: 'UK', label: t('unitedKingdom') },
+    { value: 'US', label: t('unitedStates') },
+    { value: 'GB', label: t('unitedKingdom') },
     { value: 'FR', label: t('france') },
     { value: 'DE', label: t('germany') },
     { value: 'CN', label: t('china') },
-    { value: 'RUS', label: t('russia') },
+    { value: 'RU', label: t('russia') },
     { value: 'IN', label: t('india') },
     { value: 'BR', label: t('brazil') },
     { value: 'CA', label: t('canada') },
@@ -60,7 +60,26 @@ const paymentOptions = [
     e?.preventDefault();
     setLoading(true);
     try {
-      await onSubmit(formData);
+      const payload = {
+  amount: Number(formData.amount),
+  currency: formData.currency,
+  country: formData.country,
+
+
+  tx_type: formData.transactionType === "incoming" ? "credit" : "debit",
+
+  merchant_category: formData.merchant_category,
+  device_used: formData.device_used,
+
+
+  payment_channel:
+    formData.payment_channel === "ACH"
+      ? "ACH"
+      : formData.payment_channel
+};
+
+console.log("FINAL PAYLOAD:", payload);
+await onSubmit(payload);
     } catch (error) {
       console.error('Transaction submission error:', error);
     } finally {

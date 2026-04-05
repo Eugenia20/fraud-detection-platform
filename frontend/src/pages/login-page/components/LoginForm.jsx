@@ -72,8 +72,8 @@ const LoginForm = () => {
       const response = await axios?.post(
         `${apiBaseUrl}/login`,
         {
-          email: formData?.email,
-          password: formData?.password
+          email: formData?.email?.trim(),
+          password: formData?.password?.trim()
         },
         {
           headers: {

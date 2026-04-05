@@ -29,25 +29,15 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # ==========================
 # PASSWORD HANDLING
 # ==========================
-
 def hash_password(password: str) -> str:
-    """
-    Hash password securely using bcrypt.
-    Bcrypt supports maximum 72 bytes.
-    """
-    if len(password.encode("utf-8")) > 72:
-        raise ValueError("Password cannot exceed 72 characters")
-
+    password = password.strip()
+    password = password.encode("utf-8")[:72]
     return pwd_context.hash(password)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """
-    Verify password against stored hash.
-    """
-    if len(plain_password.encode("utf-8")) > 72:
-        return False
-
+    plain_password = plain_password.strip()
+    plain_password = plain_password.encode("utf-8")[:72]
     return pwd_context.verify(plain_password, hashed_password)
 
 
@@ -61,16 +51,7 @@ def create_access_token(
     is_admin: bool = False,
     expires_delta: timedelta | None = None,
 ) -> str:
-    """
-    Create secure JWT access token.
 
-    Payload includes:
-    - sub (user id)
-    - email
-    - role
-    - iat
-    - exp
-    """
 
     now = datetime.utcnow()
     expire = now + (
@@ -89,10 +70,7 @@ def create_access_token(
 
 
 def decode_access_token(token: str):
-    """
-    Decode and validate JWT access token.
-    Returns payload or None if invalid.
-    """
+
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
@@ -105,21 +83,15 @@ def decode_access_token(token: str):
 # ==========================
 
 def generate_refresh_token() -> str:
-    """
-    Generate secure random refresh token.
-    """
+
     return secrets.token_urlsafe(64)
 
 
 def hash_token(token: str) -> str:
-    """
-    Hash refresh token before storing in DB.
-    """
+
     return hashlib.sha256(token.encode()).hexdigest()
 
 
 def refresh_token_expiry() -> datetime:
-    """
-    Calculate refresh token expiry date.
-    """
+
     return datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)

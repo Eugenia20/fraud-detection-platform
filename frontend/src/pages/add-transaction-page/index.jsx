@@ -42,7 +42,10 @@ const AddTransactionPage = () => {
       amount: parseFloat(transactionData?.amount),
       currency: transactionData?.currency,
       country: transactionData?.country,
-      tx_type: transactionData?.transactionType === "incoming" ? "credit" : "debit"
+      tx_type: transactionData.tx_type,
+      merchant_category: transactionData?.merchant_category,
+      device_used: transactionData?.device_used,
+      payment_channel: transactionData?.payment_channel,
       };
 
       // Make POST request to backend API
@@ -133,7 +136,7 @@ const AddTransactionPage = () => {
       }
 
     } catch (err) {
-      console.error('Transaction API error:', err);
+      console.error("FULL ERROR:", err.response?.data || err);
       
       // Handle different error types
       if (err?.response?.status === 401) {
