@@ -8,6 +8,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    # 🔥 MOVE ENV HERE (GLOBAL)
+    env:
+      TESTING: "1"
+      SECRET_KEY: testsecret123
+      ALGORITHM: HS256
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@localhost:5432/finance_test
+
     services:
       postgres:
         image: postgres:15
@@ -39,9 +46,4 @@ jobs:
 
     - name: Run tests
       working-directory: backend
-      env:
-        TESTING: "1"
-        SECRET_KEY: testsecret123
-        ALGORITHM: HS256
-        DATABASE_URL: postgresql+psycopg2://postgres:postgres@localhost:5432/finance_test
       run: pytest -v
