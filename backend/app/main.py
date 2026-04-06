@@ -26,7 +26,8 @@ with open(model_path, "rb") as f:
 # DATABASE INITIALIZATION
 # ====================================================
 
-models.Base.metadata.create_all(bind=engine)
+if os.getenv("TESTING") != "1":
+    models.Base.metadata.create_all(bind=engine)
 
 
 # ====================================================
