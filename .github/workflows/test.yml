@@ -25,23 +25,21 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3.11"
 
     - name: Install dependencies
       run: |
-        cd backend
-        pip install -r requirements.txt
+        pip install -r backend/requirements.txt
         pip install pytest httpx
 
     - name: Run tests
+      working-directory: backend
       env:
         TESTING: "1"
         DATABASE_URL: postgresql+psycopg2://postgres:postgres@localhost:5432/finance_test
-      run: |
-        cd backend
-        pytest -v
+      run: pytest -v
