@@ -12,13 +12,8 @@ import os
 
 load_dotenv()
 
-SECRET_KEY = os.getenv("SECRET_KEY")
 
-if not SECRET_KEY:
-    if os.getenv("TESTING") == "1":
-        SECRET_KEY = "testsecret123"
-    else:
-        raise RuntimeError("SECRET_KEY is not set in environment variables")
+SECRET_KEY = os.getenv("SECRET_KEY", "testsecret123")
 
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 15))
@@ -56,7 +51,6 @@ def create_access_token(
     expires_delta: timedelta | None = None,
 ) -> str:
 
-
     now = datetime.utcnow()
     expire = now + (
         expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -74,7 +68,6 @@ def create_access_token(
 
 
 def decode_access_token(token: str):
-
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
@@ -87,15 +80,12 @@ def decode_access_token(token: str):
 # ==========================
 
 def generate_refresh_token() -> str:
-
     return secrets.token_urlsafe(64)
 
 
 def hash_token(token: str) -> str:
-
     return hashlib.sha256(token.encode()).hexdigest()
 
 
 def refresh_token_expiry() -> datetime:
-
     return datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
