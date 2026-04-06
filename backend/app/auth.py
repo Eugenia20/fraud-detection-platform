@@ -14,7 +14,6 @@ load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-
 if not SECRET_KEY:
     if os.getenv("TESTING") == "1":
         SECRET_KEY = "testsecret123"
