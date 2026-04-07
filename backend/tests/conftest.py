@@ -7,8 +7,12 @@ from app.main import app
 from app.database import Base
 from app import models
 from app.core.security import get_db
+import os
 
-TEST_DATABASE_URL = "postgresql+psycopg2://postgres:postgres@localhost:5433/finance_test"
+TEST_DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql+psycopg2://postgres:postgres@localhost:5433/finance_test"
+)
 
 engine = create_engine(TEST_DATABASE_URL)
 TestingSessionLocal = sessionmaker(
