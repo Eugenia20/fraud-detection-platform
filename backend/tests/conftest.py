@@ -9,10 +9,10 @@ from app import models
 from app.core.security import get_db
 import os
 
-TEST_DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql+psycopg2://postgres:postgres@localhost:5433/finance_test"
-)
+if os.getenv("TESTING") == "1":
+    TEST_DATABASE_URL = os.getenv("DATABASE_URL")
+else:
+    TEST_DATABASE_URL = "postgresql+psycopg2://postgres:postgres@localhost:5433/finance_test"
 
 engine = create_engine(TEST_DATABASE_URL)
 TestingSessionLocal = sessionmaker(
@@ -33,7 +33,7 @@ def override_get_db():
         db.close()
 
 
-# 🔥 OVERRIDE REAL DB
+
 app.dependency_overrides[get_db] = override_get_db
 
 
