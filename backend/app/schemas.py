@@ -4,7 +4,6 @@ from datetime import datetime
 import re
 from enum import Enum
 
-
 # ====================================================
 # PASSWORD VALIDATION
 # ====================================================
@@ -119,7 +118,6 @@ class TransactionType(str, Enum):
     debit = "debit"
     credit = "credit"
 
-# schemas.py
 
 class TransactionCreate(BaseModel):
     amount: float
@@ -149,11 +147,6 @@ class TransactionOut(BaseModel):
 
     class Config:
         from_attributes = True
-
-
-
-
-
 
 class TransactionRequest(BaseModel):
     amount: float

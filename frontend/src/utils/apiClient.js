@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: import.meta.env?.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api/v1',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1',
   timeout: 10000,
   headers: {
     'accept': 'application/json',
@@ -9,10 +9,9 @@ const apiClient = axios.create({
   },
 });
 
-// Helper to get token
-const getToken = () => localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+const getToken = () =>
+  localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
 
-// Attach the token to every request
 apiClient.interceptors.request.use(
   (config) => {
     const token = getToken();

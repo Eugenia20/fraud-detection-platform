@@ -1,8 +1,6 @@
 import os
 
 
-if os.getenv("TESTING") == "1":
-    os.environ["DATABASE_URL"] = "postgresql+psycopg2://postgres:postgres@localhost:5432/finance_test"
 
 import pytest
 from sqlalchemy import create_engine
@@ -14,7 +12,7 @@ from app.database import Base
 from app import models
 from app.core.security import get_db
 
-# Now safe to use
+
 TEST_DATABASE_URL = os.environ["DATABASE_URL"]
 
 engine = create_engine(TEST_DATABASE_URL)

@@ -5,7 +5,7 @@ import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import { Checkbox } from '../../../components/ui/Checkbox';
 import Icon from '../../../components/AppIcon';
-import axios from 'axios';
+import apiClient from '../../../utils/apiClient';
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -67,22 +67,10 @@ const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
-
-      const response = await axios?.post(
-        `${apiBaseUrl}/login`,
-        {
-          email: formData?.email?.trim(),
-          password: formData?.password?.trim()
-        },
-        {
-          headers: {
-            'accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          timeout: 10000
-        }
-      );
+      const response = await apiClient.post('/login', {
+  email: formData?.email?.trim(),
+  password: formData?.password?.trim()
+    });
 
       // Store the real access token from backend
       if (response?.data?.access_token) {

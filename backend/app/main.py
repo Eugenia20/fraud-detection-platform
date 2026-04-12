@@ -15,10 +15,16 @@ from pathlib import Path
 # LOAD THE TRAINED MODEL
 # ====================================================
 # Path to the saved trained model
-BASE_DIR = Path(__file__).resolve().parents[1]  # app/
-model_path = BASE_DIR / "ml" / "fraud_detection_xgboost.pkl"
 
-# Load the model when the app starts
+
+
+# Detect environment
+if os.getenv("DOCKER") == "1":
+    model_path = Path("/app/ml/fraud_detection_xgboost.pkl")
+else:
+    BASE_DIR = Path(__file__).resolve().parents[1]
+    model_path = BASE_DIR / "ml" / "fraud_detection_xgboost.pkl"
+
 with open(model_path, "rb") as f:
     model = pickle.load(f)
 
@@ -26,8 +32,7 @@ with open(model_path, "rb") as f:
 # DATABASE INITIALIZATION
 # ====================================================
 
-if os.getenv("TESTING") != "1":
-    models.Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)
 
 
 # ====================================================
@@ -74,10 +79,10 @@ async def rate_limit_middleware(request: Request, call_next):
 # ====================================================
 
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+    CORSMiddleware,allow_origins=[
+     "http://localhost:4028",
+        "http://localhost:5173",
         "http://localhost:3000",
-        "http://127.0.0.1:3000"
     ],
     allow_credentials=True,
     allow_methods=["*"],
